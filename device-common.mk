@@ -78,6 +78,29 @@ PRODUCT_COPY_FILES += \
 
 include device/google/wahoo/device.mk
 
+# Kernel modules
+ifeq ($(INLINE_KERNEL_BUILDING),false)
+ifneq (,$(TARGET_PREBUILT_KERNEL))
+    # If TARGET_PREBUILT_KERNEL is set, check whether there are modules packaged with that kernel
+    # image. If so, use them, otherwise fall back to the default directory.
+    TARGET_PREBUILT_KERNEL_PREBUILT_VENDOR_KERNEL_MODULES := \
+        $(wildcard $(dir $(TARGET_PREBUILT_KERNEL))/*.ko)
+    ifneq (,$(TARGET_PREBUILT_KERNEL_PREBUILT_VENDOR_KERNEL_MODULES))
+        BOARD_VENDOR_KERNEL_MODULES += $(TARGET_PREBUILT_KERNEL_PREBUILT_VENDOR_KERNEL_MODULES)
+    else
+        BOARD_VENDOR_KERNEL_MODULES += $(wildcard device/google/wahoo-kernel/*.ko)
+    endif
+    # Do NOT delete TARGET_PREBUILT..., it will lead to empty BOARD_VENDOR_KERNEL_MODULES.
+else
+BOARD_VENDOR_KERNEL_MODULES += \
+    device/google/wahoo-kernel/synaptics_dsx_core_htc.ko \
+    device/google/wahoo-kernel/synaptics_dsx_rmi_dev_htc.ko \
+    device/google/wahoo-kernel/synaptics_dsx_fw_update_htc.ko \
+    device/google/wahoo-kernel/htc_battery.ko \
+    device/google/wahoo-kernel/wlan.ko
+endif
+endif
+
 PRODUCT_COPY_FILES += \
     device/google/muskie/nfc/libnfc-nxp.muskie.conf:$(TARGET_COPY_OUT_VENDOR)/etc/libnfc-nxp.conf
 
