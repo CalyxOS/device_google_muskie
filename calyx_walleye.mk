@@ -8,4 +8,6 @@ $(call inherit-product, device/google/muskie/aosp_walleye.mk)
 ## Device identifier. This must come after all inclusions
 PRODUCT_NAME := calyx_walleye
 PRODUCT_MODEL := Pixel 2
+PRODUCT_BRAND := google
+
 PRODUCT_RESTRICT_VENDOR_FILES := false
