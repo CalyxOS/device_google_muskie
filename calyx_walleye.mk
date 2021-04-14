@@ -9,3 +9,5 @@ $(call inherit-product, device/google/muskie/aosp_walleye.mk)
 PRODUCT_NAME := calyx_walleye
 PRODUCT_MODEL := Pixel 2
 PRODUCT_RESTRICT_VENDOR_FILES := false
+
+PRODUCT_SOONG_NAMESPACES += vendor/google_devices/walleye
